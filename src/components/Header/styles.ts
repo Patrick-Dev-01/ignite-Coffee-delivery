@@ -9,6 +9,11 @@ export const HeaderContent = styled.div`
     display: flex;
     justify-content: space-between;
     padding: 0 10rem;
+
+    a{
+        text-decoration: none;
+        line-height: 0;
+    }
 `;
 
 export const HeaderInfo = styled.div`
@@ -33,6 +38,7 @@ export const HeaderCart = styled.div`
     background: ${props => props.theme["yellow-100"]};
     border-radius: 6px;
     padding: 0.5rem;
+    line-height: 0;
 
     display: flex;
     align-items: center;

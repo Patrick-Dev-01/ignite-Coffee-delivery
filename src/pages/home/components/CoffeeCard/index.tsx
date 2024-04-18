@@ -3,8 +3,11 @@ import { AddCoffee, CoffeeActionButton,
     CoffeeActions, CoffeeCardBox, CoffeeCardDescription, CoffeeCardShop, CoffeeCardTags, 
     CoffeeShopButtonsContainer 
 } from "./styles";
+import { useContext, useState } from "react";
+import { CartContext } from "../../../../contexts/CartContext";
+import { CoffeeCart } from "../../../../reducers/CartReducer/reducer";
 
-interface CoffeCardProps{
+export interface Coffee{
     src: string;
     tags: string[]
     title: string;
@@ -12,7 +15,23 @@ interface CoffeCardProps{
     price: number;
 }
 
-export function CoffeCard({ src, tags, title, description, price  }: CoffeCardProps){
+interface CoffeeCardProps extends Coffee{}
+
+export function CoffeCard({ src, tags, title, description, price }: CoffeeCardProps){
+    const [quantity, setQuantity] = useState(1);
+    const { addNewCoffeeToCart } = useContext(CartContext);
+
+    function handleCheckCoffeeInCart(){
+        const newCoffee: CoffeeCart = {
+            src,
+            title,
+            price,
+            quantity
+        }
+
+        addNewCoffeeToCart(newCoffee);
+    }
+
     return(
         <CoffeeCardBox>
             <img src={src} alt="" />
@@ -35,11 +54,11 @@ export function CoffeCard({ src, tags, title, description, price  }: CoffeCardPr
                 <CoffeeShopButtonsContainer>
                     <span>R$ { price }</span>
                     <CoffeeActions>
-                        <CoffeeActionButton>-</CoffeeActionButton>
-                        <p>1</p>
-                        <CoffeeActionButton>+</CoffeeActionButton>
+                        <CoffeeActionButton onClick={() => { quantity !== 1 && setQuantity(quantity - 1) }}>-</CoffeeActionButton>
+                        <p>{ quantity }</p>
+                        <CoffeeActionButton onClick={() => setQuantity(quantity + 1)}>+</CoffeeActionButton>
                     </CoffeeActions>
-                    <AddCoffee>
+                    <AddCoffee onClick={handleCheckCoffeeInCart}>
                         <ShoppingCart size={22} weight='fill' color='#fff'/>
                     </AddCoffee>
                 </CoffeeShopButtonsContainer>
