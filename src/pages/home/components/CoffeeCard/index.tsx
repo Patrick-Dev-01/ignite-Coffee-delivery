@@ -6,8 +6,9 @@ import { AddCoffee, CoffeeActionButton,
 import { useContext, useState } from "react";
 import { CartContext } from "../../../../contexts/CartContext";
 import { CoffeeCart } from "../../../../reducers/CartReducer/reducer";
+import { priceFormatter } from "../../../../utils/formatter";
 
-export interface Coffee{
+interface CoffeeCardProps{
     src: string;
     tags: string[]
     title: string;
@@ -15,21 +16,27 @@ export interface Coffee{
     price: number;
 }
 
-interface CoffeeCardProps extends Coffee{}
-
 export function CoffeCard({ src, tags, title, description, price }: CoffeeCardProps){
     const [quantity, setQuantity] = useState(1);
-    const { addNewCoffeeToCart } = useContext(CartContext);
+    const { coffeeCart, addNewCoffeeCart, updateCoffeeQuantity } = useContext(CartContext);
 
-    function handleCheckCoffeeInCart(){
-        const newCoffee: CoffeeCart = {
-            src,
-            title,
-            price,
-            quantity
+    function handleCheckCoffeeCart(){
+        const isCoffeeAlreadyAdded = coffeeCart.find(coffee => coffee.title === title);
+
+        if(isCoffeeAlreadyAdded){
+            updateCoffeeQuantity(title, quantity);
         }
 
-        addNewCoffeeToCart(newCoffee);
+        else{
+            const newCoffee: CoffeeCart = {
+                src,
+                title,
+                price,
+                quantity
+            }
+    
+            addNewCoffeeCart(newCoffee);
+        }
     }
 
     return(
@@ -52,13 +59,13 @@ export function CoffeCard({ src, tags, title, description, price }: CoffeeCardPr
             <CoffeeCardShop>
 
                 <CoffeeShopButtonsContainer>
-                    <span>R$ { price }</span>
+                    <span>{priceFormatter.format(price)}</span>
                     <CoffeeActions>
                         <CoffeeActionButton onClick={() => { quantity !== 1 && setQuantity(quantity - 1) }}>-</CoffeeActionButton>
                         <p>{ quantity }</p>
                         <CoffeeActionButton onClick={() => setQuantity(quantity + 1)}>+</CoffeeActionButton>
                     </CoffeeActions>
-                    <AddCoffee onClick={handleCheckCoffeeInCart}>
+                    <AddCoffee onClick={handleCheckCoffeeCart}>
                         <ShoppingCart size={22} weight='fill' color='#fff'/>
                     </AddCoffee>
                 </CoffeeShopButtonsContainer>

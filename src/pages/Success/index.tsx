@@ -1,8 +1,6 @@
 import { CurrencyDollar, MapPin, Timer } from "phosphor-react";
 import { InfoDelivery, SuccessBox, SuccessContainer, SuccessHeader, SuccessSection, SuccessWrapper } from "./styles";
 
-// import delivery from '../../assets/delivery.svg';
-
 export function Success(){
     return(
         <SuccessContainer>

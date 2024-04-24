@@ -92,6 +92,11 @@ export const CoffeeActions = styled.div`
     justify-content: space-between;
     align-items: center;
     gap: 0.5rem;
+
+    button:disabled{
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
 `; 
 
 export const CoffeeActionButton = styled.button`
@@ -117,7 +122,7 @@ export const AddCoffee = styled.button`
     border: 0;
     border-radius: 6px;
     cursor: pointer;
-    
+
     &:hover{
         transition: background-color 0.2s;
         background: ${props => props.theme["purple-900"]};

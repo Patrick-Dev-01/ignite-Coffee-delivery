@@ -15,6 +15,25 @@ export function CoffeeCartReducer(state: CoffeeCartState, action: any){
                 ...state,
                 coffeeCart: [...state.coffeeCart, action.payload]
             }
+
+        case ActionTypes.UPDATE_COFFEE_QUANTITY:
+            return {
+                ...state,
+                coffeeCart: state.coffeeCart.map(coffee => {
+                    if(coffee.title === action.payload.title){
+                        return { ...coffee, quantity: action.payload.quantity }
+                    }
+
+                    else{
+                        return coffee;
+                    }
+                })
+            }
+        case ActionTypes.REMOVE_COFFEE_FROM_CART:
+            return {
+                ...state,
+                coffeeCart: state.coffeeCart.filter(coffee => coffee.title !== action.payload.title),
+            } 
         default: 
             return state;
     }

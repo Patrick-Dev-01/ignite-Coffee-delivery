@@ -5,8 +5,24 @@ import { CheckoutContainer, CheckoutWrapper, InputForm, OrderBox, OrderBoxItemsC
 
 import { CoffeeItem } from "./components/CoffeeItem";
 import { NavLink } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { CartContext } from "../../contexts/CartContext";
+import { priceFormatter } from "../../utils/formatter";
 
 export function CheckOut(){
+    const [total, setTotal] = useState(0);
+    const { coffeeCart } = useContext(CartContext);
+
+    useEffect(() => {
+        setTotal(() => 
+            coffeeCart.reduce((acc, c) => {
+                return acc + (c.price * c.quantity);
+            }, 0)
+        )
+
+        console.log(coffeeCart)
+    }, [coffeeCart]);
+
     return(
         <CheckoutContainer>
             <CheckoutWrapper>
@@ -70,34 +86,45 @@ export function CheckOut(){
                 </OrderBox>
     
                 <OrderBoxItemsContainer>
-                    <h3>Cafés Selecionados</h3>
-                    <OrderItemsAside>
-                        <OrderItemsWrapper>
-                           <CoffeeItem />
-                           <CoffeeItem />
-                        </OrderItemsWrapper>
-
-                        <OrderSpecs>
-                            <span>
-                                <p>Total de itens</p>
-                                <p>R$ 9,90</p>
-                            </span>
-                            <span>
-                                <p>Entrega</p>
-                                <p>R$ 3,50</p>
-                            </span>
-                            <span>
-                                <strong>Total</strong>
-                                <p>R$ 33,20</p>
-                            </span>
-
-                                <button type="submit">
-                                    <NavLink to='/success'>
-                                        Confirmar Pedido
-                                    </NavLink>
-                                </button>
-                        </OrderSpecs>
-                    </OrderItemsAside>
+                    { coffeeCart.length > 0 && (
+                        <>
+                            <h3>Cafés Selecionados</h3>
+                            <OrderItemsAside>
+                                <OrderItemsWrapper>
+                                { coffeeCart.map(coffee => (
+                                    <CoffeeItem 
+                                        key={coffee.title}   
+                                        src={coffee.src}
+                                        title={coffee.title}
+                                        quantity={coffee.quantity}
+                                        price={coffee.price}
+                                    />
+                                ))}
+                                </OrderItemsWrapper>
+        
+                                <OrderSpecs>
+                                    <span>
+                                        <p>Total de itens</p>
+                                        <p>{priceFormatter.format(total)}</p>
+                                    </span>
+                                    <span>
+                                        <p>Entrega</p>
+                                        <p>R$ 3,50</p>
+                                    </span>
+                                    <span>
+                                        <strong>Total</strong>
+                                        <p>{priceFormatter.format(total + 3.50)}</p>
+                                    </span>
+        
+                                        <button type="submit">
+                                            <NavLink to='/success'>
+                                                Confirmar Pedido
+                                            </NavLink>
+                                        </button>
+                                </OrderSpecs>
+                            </OrderItemsAside>
+                        </>
+                    )}
                 </OrderBoxItemsContainer>
             </CheckoutWrapper>
         </CheckoutContainer>
