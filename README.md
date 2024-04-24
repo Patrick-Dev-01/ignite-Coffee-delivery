@@ -14,3 +14,9 @@
 - React Hook Form
 - Zod
 - phosphor-react (Biblioteca de ícones)
+
+### Como testar?
+
+- Clone o projeto
+- Execute npm install na raiz
+- Execute "npm run dev"
