@@ -34,6 +34,12 @@ export function CoffeeCartReducer(state: CoffeeCartState, action: any){
                 ...state,
                 coffeeCart: state.coffeeCart.filter(coffee => coffee.title !== action.payload.title),
             } 
+
+        case ActionTypes.CLEAR_CART_ON_SUCCESS:
+            return {
+                ...state,
+                coffeeCart: [],
+            }
         default: 
             return state;
     }

@@ -39,8 +39,25 @@ export const HeaderCart = styled.div`
     border-radius: 6px;
     padding: 0.5rem;
     line-height: 0;
+    position: relative;
 
     display: flex;
     align-items: center;
     gap: 0.5rem;
+
+    span{
+        width: 10px;
+        background: ${props => props.theme["yellow-800"]};
+        color: #fff;
+        font-size: 0.90rem;
+        padding: 0.8rem;
+        border-radius: 60px;
+        position: absolute;
+        top: -10px;
+        right: -15px;
+        display: flex;
+        justify-content: center;
+        align-self: center;
+        font-weight: bold;
+    }
 `;

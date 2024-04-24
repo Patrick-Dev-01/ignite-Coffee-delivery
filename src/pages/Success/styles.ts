@@ -33,9 +33,9 @@ export const SuccessHeader = styled.header`
 `;
 
 export const SuccessSection = styled.section`
-    display: flex;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
     gap: 6rem;
-    justify-content: space-between; 
 `;
 
 export const SuccessBox = styled.div`

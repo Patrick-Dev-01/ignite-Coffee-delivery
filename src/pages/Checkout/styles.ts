@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import * as RadioGroup from '@radix-ui/react-radio-group';
 
 export const CheckoutContainer = styled.main`
     width: 100%;
@@ -88,25 +89,36 @@ export const PaymentHeader = styled.header`
     }
 `;
 
-export const PaymentMethod = styled.div`
+export const PaymentMethod = styled(RadioGroup.Root)`
     margin: 2rem 0;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+`;
 
-    button{
-        flex: 1;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        background: ${props => props.theme['gray-300']};
-        color: ${props => props.theme['gray-700']};;
-        border: 0;
-        border-radius: 6px;
-        padding: 1rem;
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        cursor: pointer;
+export const PaymentMethodButton = styled(RadioGroup.Item)`
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: ${props => props.theme['gray-300']};
+    color: ${props => props.theme['gray-700']};;
+    border: 0;
+    border-radius: 6px;
+    padding: 1rem;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    cursor: pointer;
+
+    &[data-state="unchecked"]:hover{
+        background: ${props => props.theme['purple-100']};
+        border: 1px solid ${props => props.theme['purple-500']};
+        line-height: 0;
+    }
+
+    &[data-state="checked"]{
+        background: ${props => props.theme['purple-100']};
+        border: 1px solid ${props => props.theme['purple-500']};
     }
 `;
 

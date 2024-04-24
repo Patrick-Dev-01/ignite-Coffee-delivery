@@ -1,7 +1,17 @@
 import { CurrencyDollar, MapPin, Timer } from "phosphor-react";
 import { InfoDelivery, SuccessBox, SuccessContainer, SuccessHeader, SuccessSection, SuccessWrapper } from "./styles";
+import { useContext, useEffect } from "react";
+import { CartContext } from "../../contexts/CartContext";
+
+import delivery from '../../assets/delivery.svg';
 
 export function Success(){
+    const { checkout, clearCartOnSuccess } = useContext(CartContext);
+
+    useEffect(() => {
+        clearCartOnSuccess();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return(
         <SuccessContainer>
             <SuccessWrapper>
@@ -17,8 +27,8 @@ export function Success(){
                                 <MapPin weight='fill' color="#fff" />
                             </span>
                             <div>
-                                <p>Entrega em Rua João Daniel Martinelli, 102</p>
-                                <p>Farrapos - Porto Alegre, RS</p>
+                                <p>Entrega na Rua {checkout.rua}, {checkout.numero}</p>
+                                <p>{checkout.bairro}, {checkout.uf}</p>
                             </div>
                         </InfoDelivery>
                         <InfoDelivery variant="#DBAC2C">
@@ -36,14 +46,14 @@ export function Success(){
                             </span>
                             <div>
                                 <p>Pagamento na entrega</p>
-                                <strong>Cartão de Crédito </strong> 
+                                <strong>{ checkout.pagamento }</strong> 
                             </div>
                         </InfoDelivery>
                     </SuccessBox>
 
-                    {/* <aside>
+                    <aside>
                         <img src={delivery} alt="" />
-                    </aside> */}
+                    </aside>
                 </SuccessSection>
             </SuccessWrapper>
         </SuccessContainer>

@@ -1,17 +1,38 @@
 import { Bank, CreditCard, CurrencyDollar, MapPinLine, Money } from "phosphor-react"
 import { CheckoutContainer, CheckoutWrapper, InputForm, OrderBox, OrderBoxItemsContainer, OrderFormHeader, 
-    OrderInputBlock, OrderItemsAside, OrderItemsWrapper, OrderPayment, OrderSection, OrderSpecs, PaymentHeader, PaymentMethod, 
+    OrderInputBlock, OrderItemsAside, OrderItemsWrapper, OrderPayment, OrderSection, OrderSpecs, PaymentHeader,
+    PaymentMethod, PaymentMethodButton
 } from "./styles";
 
 import { CoffeeItem } from "./components/CoffeeItem";
-import { NavLink } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../contexts/CartContext";
 import { priceFormatter } from "../../utils/formatter";
+import * as z from 'zod';
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
+
+const checkoutFormSchema = z.object({
+    cep: z.string().min(8, "O CEP precisa ter 8 digiitos").max(8, "O CEP precisa ter 8 digiitos"),
+    rua: z.string(),
+    numero: z.coerce.number(),
+    complemento: z.string().optional(),
+    bairro: z.string(),
+    cidade: z.string(),
+    uf: z.string().min(2, 'Unidade federal é 2 digitos'),
+    pagamento: z.enum(['Debito', 'Credito', 'Dinheiro'])
+})
+
+type CheckoutFormData = z.infer<typeof checkoutFormSchema>;
 
 export function CheckOut(){
+    const navigate = useNavigate();
     const [total, setTotal] = useState(0);
-    const { coffeeCart } = useContext(CartContext);
+    const { coffeeCart, checkoutDelivery } = useContext(CartContext);
+    const { register, handleSubmit, control } = useForm<CheckoutFormData>({
+        resolver: zodResolver(checkoutFormSchema) 
+    })
 
     useEffect(() => {
         setTotal(() => 
@@ -19,13 +40,16 @@ export function CheckOut(){
                 return acc + (c.price * c.quantity);
             }, 0)
         )
-
-        console.log(coffeeCart)
     }, [coffeeCart]);
+
+    function handleSubmitDelivery(data: CheckoutFormData){
+        checkoutDelivery(data);
+        navigate('/success');
+    }
 
     return(
         <CheckoutContainer>
-            <CheckoutWrapper>
+            <CheckoutWrapper onSubmit={handleSubmit(handleSubmitDelivery)}>
                 <OrderBox>
                     <h3>Complete seu pedido</h3>
                     <OrderSection>
@@ -39,22 +63,22 @@ export function CheckOut(){
 
                         <div>
                             <OrderInputBlock>
-                                <InputForm type="text" placeholder="CEP" />
+                                <InputForm type="text" placeholder="CEP" {...register("cep")}/>
                             </OrderInputBlock>
 
                             <OrderInputBlock>
-                                <InputForm type="text" placeholder="Rua" width="100%" />
+                                <InputForm type="text" placeholder="Rua" width="100%" {...register("rua")}/>
                             </OrderInputBlock>
 
                             <OrderInputBlock>
-                                <InputForm type="text" placeholder="Número" />
-                                <InputForm type="text" placeholder="Complemento" width="100%" />
+                                <InputForm type="text" placeholder="Número" {...register("numero")}/>
+                                <InputForm type="text" placeholder="Complemento" width="100%" {...register("complemento")}/>
                             </OrderInputBlock>
 
                             <OrderInputBlock>
-                                <InputForm type="text" placeholder="Bairro" />
-                                <InputForm type="text" placeholder="Cidade" width="276px"/>
-                                <InputForm type="text" placeholder="UF" width="60px" />
+                                <InputForm type="text" placeholder="Bairro" {...register("bairro")}/>
+                                <InputForm type="text" placeholder="Cidade" width="276px" {...register("cidade")}/>
+                                <InputForm type="text" placeholder="UF" width="60px" {...register("uf")}/>
                             </OrderInputBlock>
                         </div>
                     </OrderSection>
@@ -68,20 +92,28 @@ export function CheckOut(){
                             </span>
                         </PaymentHeader>
 
-                        <PaymentMethod>
-                            <button type="button">
-                                <CreditCard size={22} color="#8047F8" />
-                                Cartão de Crédito
-                            </button>
-                            <button type="button">
-                                <Bank size={22} color="#8047F8" />
-                                Cartão de Débito
-                            </button>
-                            <button type="button">
-                                <Money size={22} color="#8047F8" />
-                                Dinheiro
-                            </button>
-                        </PaymentMethod>
+                            <Controller
+                                control={control}
+                                name="pagamento"
+                                render={({ field }) => (
+                                    <PaymentMethod onValueChange={field.onChange} value={field.value}>
+                                        <PaymentMethodButton value="Credito">
+                                            <CreditCard size={16} color="#8047F8" />
+                                            Cartão de Crédito
+                                        </PaymentMethodButton>
+
+                                        <PaymentMethodButton value="Debito">
+                                            <Bank size={16} color="#8047F8" />
+                                            Cartão de Débito
+                                        </PaymentMethodButton>
+
+                                        <PaymentMethodButton value="Dinheiro">
+                                            <Money size={16} color="#8047F8" />
+                                            Dinheiro
+                                        </PaymentMethodButton>
+                                    </PaymentMethod>
+                                )}
+                            />                            
                     </OrderPayment>
                 </OrderBox>
     
@@ -117,9 +149,7 @@ export function CheckOut(){
                                     </span>
         
                                         <button type="submit">
-                                            <NavLink to='/success'>
-                                                Confirmar Pedido
-                                            </NavLink>
+                                            Confirmar Pedido
                                         </button>
                                 </OrderSpecs>
                             </OrderItemsAside>
