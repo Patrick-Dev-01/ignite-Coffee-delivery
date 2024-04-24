@@ -8,6 +8,9 @@
 - Typescript
 - Styled Components
 - Unidades Relativas
+- Radix UI
+- Reducers
+- Context API
+- React Hook Form
+- Zod
 - phosphor-react (Biblioteca de ícones)
-
-### EM DESENVOLVIMENTO
