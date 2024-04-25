@@ -5,6 +5,15 @@ export const SuccessContainer = styled.main`
     padding: 0 12rem;
     display: flex;
     justify-content: space-between;
+
+    
+    @media (max-width: 768px){
+        padding: 0 7rem;
+    }
+
+    @media (max-width: 426px){
+        padding: 3rem;
+    }
 `;
 
 export const SuccessWrapper = styled.div`
@@ -28,7 +37,17 @@ export const SuccessHeader = styled.header`
     h2{
         color: ${props => props.theme["gray-700"]};
         font-weight: 100;
+    }
 
+    
+    @media (max-width: 768px){
+        h1{
+            font-size: 1.5rem;
+        }
+
+        h2{
+            font-size: 0.75rem;
+        }
     }
 `;
 
@@ -36,6 +55,16 @@ export const SuccessSection = styled.section`
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 6rem;
+
+    @media (max-width: 768px){
+        display: flex;
+        flex-direction: column;
+    }
+
+    aside img{
+        width: 300px;
+        height: 300px;
+    }
 `;
 
 export const SuccessBox = styled.div`
@@ -68,8 +97,13 @@ export const InfoDelivery = styled.div<InfoDeliveryProps>`
 
     span{
         padding: 0.5rem;
+        font-size: 0.75rem;
         line-height: 0;
         border-radius: 50px;
         background: ${props => props.variant};
+    }
+
+    div{
+        font-size: 0.75rem;
     }
 `;

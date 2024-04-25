@@ -8,6 +8,7 @@
 - Typescript
 - Styled Components
 - Unidades Relativas
+- Design Responsivo
 - Radix UI
 - Reducers
 - Context API

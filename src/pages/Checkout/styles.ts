@@ -4,6 +4,10 @@ import * as RadioGroup from '@radix-ui/react-radio-group';
 export const CheckoutContainer = styled.main`
     width: 100%;
     padding: 0 12rem;
+
+    @media (max-width: 768px){
+        padding: 0 3rem;
+    }
 `;
 
 export const CheckoutWrapper = styled.form`
@@ -11,6 +15,10 @@ export const CheckoutWrapper = styled.form`
     display: flex;
     gap: 2rem;
     margin-top: 2.5rem;
+
+    @media (max-width: 768px){
+        flex-direction: column;
+    }
 `;
 
 export const OrderBox = styled.div` 
@@ -51,6 +59,14 @@ export const OrderInputBlock = styled.div`
    display: flex;
    gap: 1rem;
    margin: 1rem auto;
+
+   @media (max-width: 426px){
+        flex-direction: column;
+
+        input{
+            width: 100%;
+        }
+    }
 `;
 
 interface InputFormProps{
@@ -94,6 +110,10 @@ export const PaymentMethod = styled(RadioGroup.Root)`
     display: flex;
     align-items: center;
     gap: 0.5rem;
+
+    @media (max-width: 426px){
+        flex-direction: column;
+    }
 `;
 
 export const PaymentMethodButton = styled(RadioGroup.Item)`
@@ -119,6 +139,10 @@ export const PaymentMethodButton = styled(RadioGroup.Item)`
     &[data-state="checked"]{
         background: ${props => props.theme['purple-100']};
         border: 1px solid ${props => props.theme['purple-500']};
+    }
+
+    @media (max-width: 426px){
+        width: 100%;
     }
 `;
 

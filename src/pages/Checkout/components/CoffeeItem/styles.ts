@@ -28,6 +28,10 @@ export const CoffeeItemBox = styled.div`
         font-family: 'baloo 2';
         color: ${props => props.theme["gray-700"]};
     }
+
+    @media (max-width: 426px){
+        gap: 0.5rem;
+    }
 `;
 
 export const CoffeeShopButtonsContainer = styled.div`

@@ -14,6 +14,17 @@ export const HeaderContent = styled.div`
         text-decoration: none;
         line-height: 0;
     }
+
+    @media (max-width: 768px){
+        padding: 0 5rem;
+    }
+
+    @media (max-width: 426px){
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+    }
 `;
 
 export const HeaderInfo = styled.div`
@@ -32,6 +43,10 @@ export const HeaderLocation = styled.div`
     display: flex;
     align-items: center;
     gap: 0.5rem;
+
+    @media (max-width: 426px){
+        font-size: 0.80rem;
+    }
 `;
 
 export const HeaderCart = styled.div`
